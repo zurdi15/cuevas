@@ -1,6 +1,6 @@
 from sympy import *
 import numpy as np
-
+from scipy.integrate import quad
 #ALGORITMO PARA LOS POLINOMIOS DE CHEBYSCHEV
 def poli_cheb (N):
     x=symbols('x')
@@ -145,3 +145,14 @@ def Fourier_trigonometrico(Orden):
             F.append(sin((i-floor(Orden/2))*th))
     
     return F
+
+def Chebyshev_Coeff(fun,Ord):
+    x=symbols('x')
+    C=[]
+    P=poli_cheb (Ord)
+    for i in range (Ord+1):
+        h=lambdify(x,P[i],'numpy')
+        g=h*fun
+        C.append(quad(g,-1,1))
+
+    return C
